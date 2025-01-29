@@ -12,18 +12,20 @@ public class UserController {
 
     //TODO Создание пользователя
     @PostMapping
-    private void createUser(@RequestBody User user) {
-
+    private User createUser(@RequestBody User user) {
+        return new User();
     }
 
     //TODO Обновление пользователя
+    @PutMapping
+    private User updateUser(@RequestBody User user) {
+        return new User();
+    }
 
     //TODO Получение списка всех пользователей
     @GetMapping
     private List<User> getAllUsers() {
-        List<User> users = new ArrayList<>() ;
-        users.add(new User());
-        return users;
+        return new ArrayList<>(); //empty
     }
 
 }
