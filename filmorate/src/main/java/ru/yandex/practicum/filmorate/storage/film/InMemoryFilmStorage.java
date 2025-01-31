@@ -16,9 +16,6 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     private final Map<Integer, Film> map = new HashMap<>();
 
-
-
-
     @Override
     public Film createFilm(Film film) {
 

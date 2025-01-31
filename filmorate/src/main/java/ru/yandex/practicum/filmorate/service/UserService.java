@@ -33,10 +33,4 @@ public class UserService {
         return userStorage.getAllUsers();
     }
 
-    @PostConstruct
-    public void init() {
-        System.out.println("✅ UserService создан, userStorage = " + (userStorage != null ? "OK" : "NULL"));
-        System.out.println(this != null);
-    }
-
 }
