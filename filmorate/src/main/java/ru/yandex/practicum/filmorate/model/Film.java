@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.model;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
-import ru.yandex.practicum.filmorate.validator.ReleaseDate;
+import org.hibernate.validator.constraints.time.DurationMin;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -18,9 +18,8 @@ public class Film {
     @Size(max = 200, message = "Description must be less, than 200 characters")
     private String description;
 
-    @ReleaseDate(message = "Date must be after 28 december 1895")
     private LocalDate releaseDate;
 
-    @Positive
+    @DurationMin(seconds = 1)
     private Duration duration;
 }
