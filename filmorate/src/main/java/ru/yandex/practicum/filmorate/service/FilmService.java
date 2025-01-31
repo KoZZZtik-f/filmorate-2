@@ -3,6 +3,8 @@ package ru.yandex.practicum.filmorate.service;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
@@ -10,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class FilmService {
 
@@ -17,7 +20,6 @@ public class FilmService {
 
 
     public Film createFilm(Film film) {
-
         return filmStorage.createFilm(film);
     }
 
