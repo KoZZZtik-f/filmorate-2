@@ -8,11 +8,12 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 public class User {
 
-    private int id;
+    private Integer id;
 
     @Email(message = "Invalid email address")
     private String email;
@@ -26,7 +27,6 @@ public class User {
     @PastOrPresent(message = "Birthday must be in past")
     private LocalDate birthday;
 
-
-
+    Set<Integer> friends;
 
 }

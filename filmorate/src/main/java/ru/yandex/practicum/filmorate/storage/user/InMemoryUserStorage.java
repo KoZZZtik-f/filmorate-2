@@ -9,18 +9,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-@Repository
+@Component
 @RequiredArgsConstructor
 public class InMemoryUserStorage implements UserStorage{
 
     private final Map<Integer, User> map = new HashMap<>();
 
 
-
-
     @Override
     public User createUser(User user) {
-
         if (map.containsKey(user.getId())) {
             throw new RuntimeException();
         }

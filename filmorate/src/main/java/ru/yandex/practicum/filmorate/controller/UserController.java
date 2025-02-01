@@ -13,6 +13,7 @@ import ru.yandex.practicum.filmorate.service.UserService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -25,9 +26,8 @@ public class UserController {
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
+        if (user != null) throw new RuntimeException();
         log.info("Create user {}", user.getEmail());
-        System.out.println("DEBUG1");
-        System.out.println(this.userService != null);
         return userService.createUser(user);
     }
 
@@ -39,7 +39,6 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable("id") Integer id) {
-
         return userService.getUserById(id);
     }
 
@@ -47,6 +46,28 @@ public class UserController {
     public Collection<User> getAllUsers() {
         return userService.getAllUsers();
     }
+    //TODO: Методы ниже сделать
+    @PutMapping("/{id}/friends/{friendId}")
+    public void addFriend(@PathVariable("id") Integer id, @PathVariable("friendId") Integer friendId) {
+        userService.addFriend(id, friendId);
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public void removeFriend(@PathVariable("id") Integer id, @PathVariable("friendId") Integer friendId) {
+        userService.removeFriend(id, friendId);
+    }
+
+    @GetMapping("/{id}/friends")
+    public Set<Integer> getAllUserFriends(@PathVariable("id") Integer id) {
+        return userService.getAllFriends(id);
+    }
+
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public Set<Integer> getCommonFriends(@PathVariable("id") Integer id, @PathVariable("otherId") Integer otherId) {
+        return userService.getCommonFriends(id, otherId);
+    }
+
+
 
 //    @PostConstruct
 //    public void init() {
