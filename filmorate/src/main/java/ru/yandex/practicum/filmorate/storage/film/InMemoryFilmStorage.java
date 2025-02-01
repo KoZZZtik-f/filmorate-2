@@ -6,19 +6,17 @@ import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-@Repository
+@Component
 @RequiredArgsConstructor
 public class InMemoryFilmStorage implements FilmStorage {
 
     private final Map<Integer, Film> map = new HashMap<>();
 
+
     @Override
     public Film createFilm(Film film) {
-
         if (map.containsKey(film.getId())) {
             throw new RuntimeException();
         }
