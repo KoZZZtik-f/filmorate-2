@@ -1,8 +1,10 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.hibernate.validator.constraints.time.DurationMin;
+import ru.yandex.practicum.filmorate.serializer.DurationSerializer;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -21,5 +23,6 @@ public class Film {
     private LocalDate releaseDate;
 
     @DurationMin(seconds = 1)
+    @JsonSerialize(using = DurationSerializer.class)
     private Duration duration;
 }
