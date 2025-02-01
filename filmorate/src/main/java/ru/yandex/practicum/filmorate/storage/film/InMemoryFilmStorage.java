@@ -45,4 +45,20 @@ public class InMemoryFilmStorage implements FilmStorage {
     public Collection<Film> getAllFilms() {
         return map.values();
     }
+
+    @Override
+    public Collection<Film> getMostPopularFilms(Integer count) {
+        Comparator<Film> likesComparator = new Comparator<Film>() {
+            @Override
+            public int compare(Film o1, Film o2) {
+                return o1.getLikes().size() - o2.getLikes().size();
+            }
+        };
+
+        return map.values().stream()
+                .sorted(likesComparator)
+                .limit(count)
+                .toList();
+
+    }
 }

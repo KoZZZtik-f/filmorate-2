@@ -35,4 +35,21 @@ public class FilmService {
         return filmStorage.getAllFilms();
     }
 
+    public void addLike(Integer id, Integer userId) {
+        log.info("Film debug {}", getFilmById(id) );
+        Film film = filmStorage.getFilmById(id);
+        film.getLikes().add(userId);
+        log.info("User {} liked fiml {} ({}). Likes = {}", userId, film.getId(), film.getName(), film.getLikes().size());
+    }
+
+    public void removeLike(Integer id, Integer userId) {
+        Film film = filmStorage.getFilmById(id);
+        film.getLikes().remove(userId);
+        log.info("User {} remove like fiml {} ({}). Likes = {}", userId, film.getId(), film.getName(), film.getLikes().size());
+    }
+
+    public Collection<Film> getMostPopularFilms(Integer count) {
+        return filmStorage.getMostPopularFilms(count);
+    }
+
 }
