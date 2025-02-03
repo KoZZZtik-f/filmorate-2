@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.storage.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
@@ -26,7 +27,8 @@ public class InMemoryUserStorage implements UserStorage{
 
     @Override
     public User updateUser(User user) {
-        return map.put(user.getId(), user);
+        map.put(user.getId(), user);
+        return user;
     }
 
     @Override
@@ -43,4 +45,15 @@ public class InMemoryUserStorage implements UserStorage{
     public Collection<User> getAllUsers() {
         return map.values();
     }
+
+    @Override
+    public Boolean contains(int id) {
+        return map.containsKey(id);
+    }
+
+    @Override
+    public Boolean contains(User user) {
+        return map.containsKey(user.getId());
+    }
+
 }

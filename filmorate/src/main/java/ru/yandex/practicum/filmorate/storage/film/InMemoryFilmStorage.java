@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.storage.film;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -59,5 +60,15 @@ public class InMemoryFilmStorage implements FilmStorage {
                 .limit(count)
                 .toList();
 
+    }
+
+    @Override
+    public boolean contains(Film user) {
+        return map.containsKey(user.getId());
+    }
+
+    @Override
+    public boolean contains(Integer id) {
+        return map.containsKey(id);
     }
 }
