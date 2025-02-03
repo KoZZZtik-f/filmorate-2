@@ -18,4 +18,7 @@ public interface FilmStorage {
 
     Collection<Film> getMostPopularFilms(Integer count);
 
+    boolean contains(Film film);
+
+    boolean contains(Integer id);
 }

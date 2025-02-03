@@ -16,4 +16,9 @@ public interface UserStorage {
 
     Collection<User> getAllUsers();
 
+    Boolean contains(int id);
+
+    Boolean contains(User user);
+
+
 }
