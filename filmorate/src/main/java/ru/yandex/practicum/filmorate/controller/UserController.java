@@ -22,7 +22,6 @@ public class UserController {
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
-        if (user != null) throw new RuntimeException();
         log.info("Create user {}", user.getEmail());
         return userService.createUser(user);
     }
@@ -42,7 +41,7 @@ public class UserController {
     public Collection<User> getAllUsers() {
         return userService.getAllUsers();
     }
-    //TODO: Методы ниже сделать
+
     @PutMapping("/{id}/friends/{friendId}")
     public void addFriend(@PathVariable("id") Integer id, @PathVariable("friendId") Integer friendId) {
         userService.addFriend(id, friendId);
@@ -54,12 +53,12 @@ public class UserController {
     }
 
     @GetMapping("/{id}/friends")
-    public Set<Integer> getAllUserFriends(@PathVariable("id") Integer id) {
+    public Set<User> getAllUserFriends(@PathVariable("id") Integer id) {
         return userService.getAllFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    public Set<Integer> getCommonFriends(@PathVariable("id") Integer id, @PathVariable("otherId") Integer otherId) {
+    public Set<User> getCommonFriends(@PathVariable("id") Integer id, @PathVariable("otherId") Integer otherId) {
         return userService.getCommonFriends(id, otherId);
     }
 
