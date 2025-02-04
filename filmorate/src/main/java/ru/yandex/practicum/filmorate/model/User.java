@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
@@ -16,6 +17,8 @@ public class User {
         friends = new HashSet<>();
     }
 
+    //TODO: Включить айди в вывод и возвращать айди из базы данных (ч/з KeyHolder)
+    @JsonIgnore
     private Integer id;
 
     @Email(message = "Invalid email address")
@@ -30,6 +33,7 @@ public class User {
     @PastOrPresent(message = "Birthday must be in past")
     private LocalDate birthday;
 
+    @JsonIgnore
     Set<Integer> friends;
 
 }

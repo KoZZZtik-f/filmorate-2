@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -28,6 +29,7 @@ public class Film {
     @JsonSerialize(using = DurationSerializer.class)
     private Duration duration;
 
+    @JsonIgnore
     private Set<Integer> likes;
 
     public Film() {
