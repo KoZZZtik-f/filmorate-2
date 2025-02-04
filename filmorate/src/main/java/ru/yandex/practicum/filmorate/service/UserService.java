@@ -29,19 +29,15 @@ public class UserService {
         if (user.getName().isEmpty()) {
             user.setName(user.getLogin());
         }
-        if (user.getId() == null) {
-            user.setId(++lastId);
-        }
+
         return userStorage.createUser(user);
     }
 
     public User updateUser(User user) {
-        checkUserNotFound(user);
         return userStorage.updateUser(user);
     }
 
     public User getUserById(int id) {
-        checkUserNotFound(id);
         return userStorage.getUserById(id);
     }
 
@@ -50,7 +46,6 @@ public class UserService {
     }
 
     public void addFriend(Integer id, Integer friendId) {
-        checkUserNotFound(id, friendId);
         User user = userStorage.getUserById(id);
         User friend = userStorage.removeUserById(friendId);
 
