@@ -41,11 +41,9 @@ public class FilmService {
         return filmStorage.getAllFilms();
     }
 
-    public void addLike(Integer id, Integer userId) {
-        checkFilmNotFound(userId);
-        userService.checkUserNotFound(id);
+    public void addLike(Integer filmId, Integer userId) {
 
-        Film film = filmStorage.getFilmById(id);
+        Film film = filmStorage.getFilmById(filmId);
         film.getLikes().add(userId);
         log.info("User {} liked fiml {} ({}). Likes = {}", userId , film.getId(), film.getName(), film.getLikes().size());
     }
