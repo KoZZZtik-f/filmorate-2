@@ -31,7 +31,7 @@ public class FilmController {
 
     @GetMapping
     public Collection<Film> getAllFilms() {
-        return filmService.getAllFilms(); //empty
+        return filmService.getAllFilms();
     }
 
     @GetMapping("/{id}")
