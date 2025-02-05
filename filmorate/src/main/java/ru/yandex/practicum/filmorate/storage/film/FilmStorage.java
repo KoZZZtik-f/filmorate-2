@@ -12,11 +12,11 @@ public interface FilmStorage {
 
     Film getFilmById(int id);
 
-    Film removeFilmById(int id);
+    void removeFilmById(int id);
 
     Collection<Film> getAllFilms();
 
-//    Collection<Film> getMostPopularFilms(Integer count);
+    Collection<Film> getMostPopularFilms(Integer count);
 
     boolean contains(Film film);
 
