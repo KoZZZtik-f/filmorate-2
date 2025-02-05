@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.friendship.FriendshipStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.util.Arrays;
@@ -22,7 +23,7 @@ public class UserService {
 
     private static final String NOT_FOUND_MESSAGE = "Пользователь с id %d не найден";
     private final UserStorage userStorage;
-    private static int lastId;
+    private final FriendshipStorage friendshipStorage;
 
 
     public User createUser(User user) {
@@ -45,15 +46,9 @@ public class UserService {
         return userStorage.getAllUsers();
     }
 
-    public void addFriend(Integer id, Integer friendId) {
-        User user = userStorage.getUserById(id);
-        User friend = userStorage.removeUserById(friendId);
-
-        user.getFriends().add(friendId);
-        friend.getFriends().add(id);
-
-        userStorage.updateUser(user);
-        userStorage.updateUser(friend);
+    public void addFriend(Integer userId, Integer friendId) {
+        log.debug("Service addFriend({}, {})", userId, friendId);
+        friendshipStorage.addFriend(userId, friendId);
     }
 
     public void removeFriend(Integer id, Integer friendId) {
@@ -67,15 +62,9 @@ public class UserService {
         userStorage.updateUser(friend);
     }
 
-    public Set<User> getAllFriends(Integer id) {
-        var friendsId = userStorage.getUserById(id).getFriends();
-        Set<User> res = new HashSet<>();
+    public Set<User> getUserAllFriends(Integer id) {
 
-        for (Integer friendId : friendsId) {
-            res.add(userStorage.getUserById(friendId));
-        }
-
-        return res;
+        return friendshipStorage.getFriends(id);
     }
 
     public Set<User> getCommonFriends(Integer id, Integer otherId) {
