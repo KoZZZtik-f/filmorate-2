@@ -3,11 +3,10 @@ package ru.yandex.practicum.filmorate.storage.film;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -37,13 +36,17 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film removeFilmById(int id) {
-        return map.remove(id);
+    public void removeFilmById(int id) {
     }
 
     @Override
     public Collection<Film> getAllFilms() {
         return map.values();
+    }
+
+    @Override
+    public Collection<Film> getMostPopularFilms(Integer count) {
+        return List.of();
     }
 
 //    @Override
