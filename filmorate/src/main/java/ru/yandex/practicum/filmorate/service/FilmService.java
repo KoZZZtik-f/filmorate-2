@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.like.LikeStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.util.Collection;
@@ -18,10 +19,11 @@ import java.util.Comparator;
 @RequiredArgsConstructor
 public class FilmService {
 
-    private static final String NOT_FOUND_MESSAGE = "Film с id %id не найден";
+    private static final String NOT_FOUND_MESSAGE = "Film с id %d не найден";
     private final FilmStorage filmStorage;
     private final UserStorage userStorage;
     private final UserService userService;
+    private final LikeStorage likeStorage;
 
 
     public Film createFilm(Film film) {
@@ -29,12 +31,10 @@ public class FilmService {
     }
 
     public Film updateFilm(Film film) {
-        checkFilmNotFound(film);
         return filmStorage.updateFilm(film);
     }
 
     public Film getFilmById(int id) {
-        checkFilmNotFound(id);
         return filmStorage.getFilmById(id);
     }
 
@@ -43,14 +43,10 @@ public class FilmService {
     }
 
     public void addLike(Integer filmId, Integer userId) {
-
-        Film film = filmStorage.getFilmById(filmId);
-        film.getLikes().add(userId);
-        log.info("User {} liked fiml {} ({}). Likes = {}", userId , film.getId(), film.getName(), film.getLikes().size());
+        likeStorage.addLike(filmId, userId);
     }
 
     public void removeLike(Integer id, Integer filmId) {
-        checkFilmNotFound(filmId);
         userService.checkUserNotFound(id);
 
         Film film = filmStorage.getFilmById(id);
