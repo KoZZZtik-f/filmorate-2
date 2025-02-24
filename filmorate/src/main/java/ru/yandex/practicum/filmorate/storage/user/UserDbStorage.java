@@ -67,6 +67,16 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
+    public Collection<User> getUserFriends(int userId) {
+        final String sql = "select * from users where id in (select friend_id from friendship where )";
+
+        List<User> friends = jdbcTemplate.query(sql, userRowMapper, userId);
+        //TODO
+        return friends;
+    }
+
+
+    @Override
     public Boolean contains(int id) {
         return null;
     }
