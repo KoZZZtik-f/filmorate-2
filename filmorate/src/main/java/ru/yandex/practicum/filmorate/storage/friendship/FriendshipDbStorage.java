@@ -45,4 +45,13 @@ public class FriendshipDbStorage implements FriendshipStorage{
         throw new RuntimeException("Метод еще в разработке");
     }
 
+    @Override
+    public Set<User> getCommonFriends(int id, int otherId) {
+        final String sql = "";
+
+//        jdbcTemplate.query(sql, )
+
+        return Set.of();
+    }
+
 }

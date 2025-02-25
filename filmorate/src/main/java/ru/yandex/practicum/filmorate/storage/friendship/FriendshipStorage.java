@@ -12,4 +12,6 @@ public interface FriendshipStorage {
 
     Set<User> getFriends(int userId);
 
+    Set<User> getCommonFriends(int id, int otherId);
+
 }
