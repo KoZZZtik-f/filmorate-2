@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -44,6 +45,11 @@ public class InMemoryUserStorage implements UserStorage{
     @Override
     public Collection<User> getAllUsers() {
         return map.values();
+    }
+
+    @Override
+    public Collection<User> getUserFriends(int userId) {
+        return List.of();
     }
 
     @Override
