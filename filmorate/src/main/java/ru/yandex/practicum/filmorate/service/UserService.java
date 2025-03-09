@@ -68,22 +68,8 @@ public class UserService {
     }
 
     public Set<User> getCommonFriends(Integer id, Integer otherId) {
-        checkUserNotFound(id, otherId);
-        Set<Integer> friends1 = userStorage.getUserById(id).getFriends();
-        Set<Integer> friends2 = userStorage.getUserById(otherId).getFriends();
-        Set<Integer> intersection = friends1.stream()
-                .filter(friends2::contains)
-                .collect(Collectors.toSet());
+        Set<User> res = friendshipStorage.getCommonFriends(id, otherId);
 
-        log.info("Common friends {}, {} -> {}", Arrays.toString(friends1.toArray()),
-                Arrays.toString(friends2.toArray()),
-                Arrays.toString(intersection.toArray()));
-
-        Set<User> res = new HashSet<>();
-        for (Integer i : intersection) {
-            var user = userStorage.getUserById(i);
-            res.add(user);
-        }
         return res;
     }
 
