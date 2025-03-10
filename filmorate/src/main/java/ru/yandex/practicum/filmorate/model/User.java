@@ -17,8 +17,6 @@ public class User {
         friends = new HashSet<>();
     }
 
-    //TODO: Включить айди в вывод и возвращать айди из базы данных (ч/з KeyHolder)
-    @JsonIgnore
     private Integer id;
 
     @Email(message = "Invalid email address")
