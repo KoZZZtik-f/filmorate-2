@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
@@ -55,7 +56,19 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User removeUserById(int id) {
-        return null;
+        User user = getUserById(id);
+
+        String deleteFriendshipsSql = "DELETE FROM friendships WHERE user_id = ? OR friend_id = ?";
+        jdbcTemplate.update(deleteFriendshipsSql, id, id);
+
+        String deleteUserSql = "DELETE FROM users WHERE id = ?";
+        int deletedRows = jdbcTemplate.update(deleteUserSql, id);
+
+        if (deletedRows == 0) {
+            throw new UserNotFoundException(id);
+        }
+
+        return user;
     }
 
     @Override
