@@ -50,7 +50,13 @@ public class FilmDbStorage implements FilmStorage {
     public Film getFilmById(int id) {
         final String sql = "select * from films where id = ?" ;
 
-        return jdbcTemplate.queryForObject(sql, filmRowMapper, id);
+        try {
+            Film film = jdbcTemplate.queryForObject(sql, filmRowMapper, id);
+            film.setId(id);
+            return film;
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException(String.format("Film with id %d not found", id));
+        }
     }
 
     @Override
