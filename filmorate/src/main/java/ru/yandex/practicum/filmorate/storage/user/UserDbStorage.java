@@ -39,7 +39,7 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User updateUser(User user) {
-        final String sql = "update users set name = ?, login = ?, email = ?, birthday = ? where id = ?";
+        final String sql = "UPDATE users SET name = ?, login = ?, email = ?, birthday = ? WHERE id = ?";
 
         int updatedCount = jdbcTemplate.update(sql, user.getName(), user.getLogin(), user.getEmail(), user.getBirthday(), user.getId());
 
@@ -51,7 +51,7 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User getUserById(int id) {
-        final String sql = "select name, login, email, birthday from users where id = ?";
+        final String sql = "SELECT id, name, login, email, birthday FROM users WHERE id = ?";
 
         try {
             return jdbcTemplate.queryForObject(sql, Mappers.getUserRowMapper(), id);
@@ -96,7 +96,6 @@ public class UserDbStorage implements UserStorage {
 
         return jdbcTemplate.query(sql, Mappers.getUserRowMapper(), userId, userId, userId);
     }
-
 
     @Override
     public Boolean contains(int id) {
