@@ -24,10 +24,9 @@ public class FriendshipDbStorage implements FriendshipStorage {
 
         try {
             jdbcTemplate.update(sql, userId, friendId);
-        } catch (Throwable e) {
+        } catch (DataIntegrityViolationException e) {
             log.debug(e.getMessage());
-            throw new AlreadyFriendsException(String.format("Пользователи %d и %d уже являются друзьями",
-                    userId, friendId));
+            throw new AlreadyFriendsException();
         }
     }
 
