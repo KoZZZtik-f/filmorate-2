@@ -88,11 +88,13 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public boolean contains(Film film) {
-        return false;
+        return contains(film.getId());
     }
 
     @Override
     public boolean contains(Integer id) {
-        return false;
+        final String sql = "SELECT COUNT(*) FROM films WHERE id = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, id);
+        return count != null && count > 0;
     }
 }
