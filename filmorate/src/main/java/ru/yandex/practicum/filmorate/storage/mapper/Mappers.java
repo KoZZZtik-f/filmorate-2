@@ -20,7 +20,7 @@ public class Mappers {
     };
 
     @Getter
-    private final RowMapper<Film> filmRowMapper = (resultSet, rowNum) -> {
+    private static final RowMapper<Film> filmRowMapper = (resultSet, rowNum) -> {
         Film film = new Film();
         film.setId(resultSet.getInt("id"));
         film.setName(resultSet.getString("name"));

@@ -24,16 +24,6 @@ public class FilmDbStorage implements FilmStorage {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final RowMapper<Film> filmRowMapper = (resultSet, rowNum) -> {
-        Film film = new Film();
-        film.setId(resultSet.getInt("id"));
-        film.setName(resultSet.getString("name"));
-        film.setDescription(resultSet.getString("description"));
-        film.setReleaseDate(resultSet.getDate("release_date").toLocalDate());
-        film.setDuration(Duration.ofSeconds(resultSet.getInt("duration")));
-        return film;
-    };
-
     @Override
     public Film createFilm(Film film) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
