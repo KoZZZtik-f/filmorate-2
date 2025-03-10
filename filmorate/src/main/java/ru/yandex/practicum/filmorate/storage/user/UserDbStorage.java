@@ -13,9 +13,7 @@ import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.mapper.Mappers;
 
-import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
 
 @Slf4j
 @Component
