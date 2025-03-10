@@ -44,13 +44,10 @@ public class UserService {
     }
 
     public void addFriend(Integer userId, Integer friendId) {
-        log.debug("Service addFriend({}, {})", userId, friendId);
-        if (userId > friendId) { //Делаем так, чтобы userId < friendId
-            int tmp = friendId;
-            friendId = userId;
-            userId = tmp;
-        }
-        friendshipStorage.addFriend(userId, friendId);
+        int minId = Math.min(userId, friendId);
+        int maxId = Math.max(userId, friendId);
+
+        friendshipStorage.addFriend(minId, maxId);
     }
 
     public void removeFriend(Integer id, Integer friendId) {
