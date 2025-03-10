@@ -2,12 +2,14 @@ package ru.yandex.practicum.filmorate.storage.friendship;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.AlreadyFriendsException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.mapper.Mappers;
 
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
