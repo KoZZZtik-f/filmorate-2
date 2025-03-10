@@ -40,7 +40,7 @@ public class FilmController {
         log.info("Received request to get film by ID: {}", id);
         return filmService.getFilmById(id);
     }
-    
+
     @PutMapping("/{id}/like/{userId}")
     public void addLike(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
         log.info("Received request to add like for film with ID: {} by user with ID: {}", id, userId);
@@ -55,13 +55,10 @@ public class FilmController {
 
     @GetMapping("/popular")
     public Collection<Film> getMostPopularFilms(@RequestParam(required = false) Integer count) {
-        count = count == null ? 10 : count;
-        if (count < 0) {
-            throw new RuntimeException();
+        if (count == null) {
+            count = 10;
         }
         log.info("Received request to get popular films with count: {}", count);
         return filmService.getMostPopularFilms(count);
     }
-
-
 }

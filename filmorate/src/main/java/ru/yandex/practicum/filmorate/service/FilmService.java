@@ -11,20 +11,16 @@ import ru.yandex.practicum.filmorate.storage.like.LikeStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.util.Collection;
-import java.util.Comparator;
 
-@Slf4j
 @Service
 @Validated
 @RequiredArgsConstructor
 public class FilmService {
 
-    private static final String NOT_FOUND_MESSAGE = "Film с id %d не найден";
     private final FilmStorage filmStorage;
     private final UserStorage userStorage;
     private final UserService userService;
     private final LikeStorage likeStorage;
-
 
     public Film createFilm(Film film) {
         return filmStorage.createFilm(film);
