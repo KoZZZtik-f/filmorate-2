@@ -67,7 +67,13 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public Collection<User> getUserFriends(int userId) {
-        final String sql = "select * from users where id in (select friend_id from friendship where )";
+        final String sql = "SELECT u.id, u.name, u.login, u.email, u.birthday " +
+                "FROM users u " +
+                "JOIN friendships f ON u.id = CASE " +
+                "    WHEN f.user_id = ? THEN f.friend_id " +
+                "    ELSE f.user_id " +
+                "END " +
+                "WHERE f.user_id = ? OR f.friend_id = ?";
 
         return jdbcTemplate.query(sql, Mappers.getUserRowMapper(), userId, userId, userId);
     }
