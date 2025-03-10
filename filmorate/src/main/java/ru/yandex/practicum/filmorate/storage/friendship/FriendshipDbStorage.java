@@ -38,6 +38,7 @@ public class FriendshipDbStorage implements FriendshipStorage {
 
     @Override
     public void deleteFriend(int userId, int friendId) {
+        //Подавать в виде (userId < friendId)
         final String sql = "DELETE FROM friendships WHERE user_id = ? AND friend_id = ?";
 
         jdbcTemplate.update(sql, userId, friendId);
