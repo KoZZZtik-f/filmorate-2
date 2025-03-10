@@ -52,11 +52,14 @@ public class FriendshipDbStorage implements FriendshipStorage{
 
     @Override
     public Set<User> getCommonFriends(int id, int otherId) {
-        final String sql = "";
+        final String sql = "SELECT u.id, u.name, u.login, u.email, u.birthday " +
+                "FROM users u " +
+                "JOIN friendships f1 ON f1.friend_id = u.id " +
+                "JOIN friendships f2 ON f2.friend_id = u.id " +
+                "WHERE f1.user_id = ? AND f2.user_id = ?";
 
-//        jdbcTemplate.query(sql, )
-
-        return Set.of();
+        List<User> commonFriends = jdbcTemplate.query(sql, Mappers.getUserRowMapper(), id, otherId);
+        return Set.copyOf(commonFriends);
     }
 
 }
