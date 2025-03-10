@@ -8,4 +8,8 @@ public class UserNotFoundException extends NotFoundException {
         super(String.format("User with id %d not found", userId));
     }
 
+    public UserNotFoundException(String message) {
+        super(message);
+    }
+
 }
