@@ -81,11 +81,13 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public Boolean contains(int id) {
-        return null;
+        final String sql = "SELECT COUNT(*) FROM users WHERE id = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, id);
+        return count != null && count > 0;
     }
 
     @Override
     public Boolean contains(User user) {
-        return null;
+        return contains(user.getId());
     }
 }
