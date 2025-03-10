@@ -12,6 +12,7 @@ public class Mappers {
     @Getter
     private static final RowMapper<User> userRowMapper = (resultSet, rowNum) -> {
         User user = new User();
+        user.setId(resultSet.getInt("id"));
         user.setName(resultSet.getString("name"));
         user.setEmail(resultSet.getString("email"));
         user.setLogin(resultSet.getString("login"));
