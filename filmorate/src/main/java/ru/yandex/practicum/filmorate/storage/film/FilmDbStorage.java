@@ -77,10 +77,14 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Collection<Film> getMostPopularFilms(Integer count) {
-        //TODO реализовать метод
-        final String sql = "select * from films ";
+        final String sql = "select f.id, f.name, f.description, f.release_date, f.duration, " +
+                "COUNT(l.user_id) as likes_cnt " +
+                "from films f left join likes l on f.id = l.film_id " +
+                "group by f.id " +
+                "order by likes_cnt desc " +
+                "limit ?";
 
-        List<Film> films = jdbcTemplate.query(sql, filmRowMapper);
+        List<Film> films = jdbcTemplate.query(sql, filmRowMapper, count);
         return films;
     }
 
