@@ -10,7 +10,6 @@ import ru.yandex.practicum.filmorate.service.UserService;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @RestController
@@ -68,13 +67,4 @@ public class UserController {
         log.info("Received request to get common friends for user with ID: {} and user with ID: {}", id, otherId);
         return userService.getCommonFriends(id, otherId);
     }
-
-
-
-//    @PostConstruct
-//    public void init() {
-//        System.out.println("✅ UserController создан, userService = " + (userService != null ? "OK" : "NULL"));
-//        System.out.println(this != null);
-//    }
-
 }
