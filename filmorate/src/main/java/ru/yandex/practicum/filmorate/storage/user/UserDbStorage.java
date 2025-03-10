@@ -22,15 +22,6 @@ public class UserDbStorage implements UserStorage {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final RowMapper<User> userRowMapper = (resultSet, rowNum) -> {
-        User user = new User();
-        user.setName(resultSet.getString("name"));
-        user.setEmail(resultSet.getString("email"));
-        user.setLogin(resultSet.getString("login"));
-        user.setBirthday(resultSet.getDate("birthday").toLocalDate());
-        return user;
-    };
-
     @Override
     public User createUser(User user) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
@@ -55,8 +46,11 @@ public class UserDbStorage implements UserStorage {
     public User getUserById(int id) {
         final String sql = "select name, login, email, birthday from users where id = ?";
 
-        User user = jdbcTemplate.queryForObject(sql, userRowMapper, id);
-        return user;
+        try {
+            return jdbcTemplate.queryForObject(sql, Mappers.getUserRowMapper(), id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new UserNotFoundException(id);
+        }
     }
 
     @Override
@@ -66,19 +60,16 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public Collection<User> getAllUsers() {
-        final String sql = "select name, login, email, birthday from users";
+        final String sql = "SELECT id, name, login, email, birthday FROM users";
 
-        List<User> users = jdbcTemplate.query(sql, userRowMapper);
-        return users;
+        return jdbcTemplate.query(sql, Mappers.getUserRowMapper());
     }
 
     @Override
     public Collection<User> getUserFriends(int userId) {
         final String sql = "select * from users where id in (select friend_id from friendship where )";
 
-        List<User> friends = jdbcTemplate.query(sql, userRowMapper, userId);
-        //TODO
-        return friends;
+        return jdbcTemplate.query(sql, Mappers.getUserRowMapper(), userId, userId, userId);
     }
 
 
