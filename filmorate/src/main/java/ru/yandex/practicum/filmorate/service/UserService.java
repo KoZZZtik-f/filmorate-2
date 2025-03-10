@@ -51,14 +51,10 @@ public class UserService {
     }
 
     public void removeFriend(Integer id, Integer friendId) {
-        User user = userStorage.getUserById(id);
-        User friend = userStorage.removeUserById(friendId);
+        int minId = Math.min(id, friendId);
+        int maxId = Math.max(id, friendId);
 
-        user.getFriends().remove(friendId);
-        friend.getFriends().remove(id);
-
-        userStorage.updateUser(user);
-        userStorage.updateUser(friend);
+        friendshipStorage.deleteFriend(minId, maxId);
     }
 
     public List<User> getUserAllFriends(Integer id) {
