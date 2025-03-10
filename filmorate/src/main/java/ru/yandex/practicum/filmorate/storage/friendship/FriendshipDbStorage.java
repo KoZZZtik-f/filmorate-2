@@ -3,9 +3,12 @@ package ru.yandex.practicum.filmorate.storage.friendship;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.AlreadyFriendsException;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
+import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.mapper.Mappers;
 
@@ -26,9 +29,10 @@ public class FriendshipDbStorage implements FriendshipStorage {
 
         try {
             jdbcTemplate.update(sql, userId, friendId);
-        } catch (DataIntegrityViolationException e) {
-            log.debug(e.getMessage());
+        } catch (DuplicateKeyException e) {
             throw new AlreadyFriendsException();
+        } catch (DataIntegrityViolationException e) {
+            throw new UserNotFoundException(String.format("One of these id's (%d, %d) is unknown", userId, friendId));
         }
     }
 
