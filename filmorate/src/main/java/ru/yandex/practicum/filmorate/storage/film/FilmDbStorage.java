@@ -34,8 +34,12 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public Film updateFilm(Film film) {
         final String sql = "UPDATE films SET name = ?, description = ?, release_date = ?, duration = ? WHERE id = ?";
-        jdbcTemplate.update(sql, film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration().getSeconds(), film.getId());
-        return film;
+        Integer updatedCount = jdbcTemplate.update(sql, film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration().getSeconds(), film.getId());
+        if (updatedCount > 0) {
+            return film;
+        } else {
+            throw new FilmNotFoundException(film.getId());
+        }
     }
 
     @Override
