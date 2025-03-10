@@ -32,10 +32,12 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film createFilm(Film film) {
-        final String sql = "insert into films (name, description, release_date, duration) values (?, ?, ?, ?)";
-
-        jdbcTemplate.update(sql, film.getName(), film.getDescription(), film.getReleaseDate(),
-                film.getDuration().getSeconds());
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("films")
+                .usingGeneratedKeyColumns("id");
+        SqlParameterSource parameters = new BeanPropertySqlParameterSource(film);
+        Number newId = simpleJdbcInsert.executeAndReturnKey(parameters);
+        film.setId(newId.intValue());
         return film;
     }
 
