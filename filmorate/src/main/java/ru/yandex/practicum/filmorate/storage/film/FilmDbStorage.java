@@ -43,53 +43,43 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film updateFilm(Film film) {
-        final String sql = "update films set name = ?, description = ?, release_date = ?, duration = ? where id = ?";
-
-        jdbcTemplate.update(sql, film.getName(), film.getDescription(), film.getReleaseDate(),
-                film.getDuration().getSeconds(), film.getId());
+        final String sql = "UPDATE films SET name = ?, description = ?, release_date = ?, duration = ? WHERE id = ?";
+        jdbcTemplate.update(sql, film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration().getSeconds(), film.getId());
         return film;
     }
 
     @Override
     public Film getFilmById(int id) {
-        final String sql = "select * from films where id = ?" ;
-
+        final String sql = "SELECT * FROM films WHERE id = ?";
         try {
-            Film film = jdbcTemplate.queryForObject(sql, filmRowMapper, id);
-            film.setId(id);
+            Film film = jdbcTemplate.queryForObject(sql, Mappers.getFilmRowMapper(), id);
             return film;
         } catch (EmptyResultDataAccessException e) {
-            throw new NotFoundException(String.format("Film with id %d not found", id));
+            throw new FilmNotFoundException(id);
         }
     }
 
     @Override
     public void removeFilmById(int id) {
-        final String sql = "delete from films where id = ?" ;
-
+        final String sql = "DELETE FROM films WHERE id = ?";
         jdbcTemplate.update(sql, id);
     }
 
     @Override
     public Collection<Film> getAllFilms() {
-        final String sql = "select * from films";
-
-        List<Film> films = jdbcTemplate.query(sql, filmRowMapper);
-        return films;
-
+        final String sql = "SELECT * FROM films";
+        return jdbcTemplate.query(sql, Mappers.getFilmRowMapper());
     }
 
     @Override
     public Collection<Film> getMostPopularFilms(Integer count) {
-        final String sql = "select f.id, f.name, f.description, f.release_date, f.duration, " +
-                "COUNT(l.user_id) as likes_cnt " +
-                "from films f left join likes l on f.id = l.film_id " +
-                "group by f.id " +
-                "order by likes_cnt desc " +
-                "limit ?";
-
-        List<Film> films = jdbcTemplate.query(sql, filmRowMapper, count);
-        return films;
+        final String sql = "SELECT f.id, f.name, f.description, f.release_date, f.duration, " +
+                "COUNT(l.user_id) AS likes_cnt " +
+                "FROM films f LEFT JOIN likes l ON f.id = l.film_id " +
+                "GROUP BY f.id " +
+                "ORDER BY likes_cnt DESC " +
+                "LIMIT ?";
+        return jdbcTemplate.query(sql, Mappers.getFilmRowMapper(), count);
     }
 
     @Override
