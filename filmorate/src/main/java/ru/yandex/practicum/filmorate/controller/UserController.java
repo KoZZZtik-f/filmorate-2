@@ -23,43 +23,49 @@ public class UserController {
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
-        log.info("Create user {}", user.getEmail());
+        log.info("Received request to create user with email: {}", user.getEmail());
         return userService.createUser(user);
     }
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
-        log.info("Update user {}", user.getEmail());
+        log.info("Received request to update user with email: {}", user.getEmail());
         return userService.updateUser(user);
     }
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable("id") Integer id) {
+        log.info("Received request to get user by ID: {}", id);
         return userService.getUserById(id);
     }
 
     @GetMapping
     public Collection<User> getAllUsers() {
+        log.info("Received request to get all users");
         return userService.getAllUsers();
     }
 
     @PutMapping("/{id}/friends/{friendId}")
     public void addFriend(@PathVariable("id") Integer id, @PathVariable("friendId") Integer friendId) {
+        log.info("Received request to add friend with ID: {} to user with ID: {}", friendId, id);
         userService.addFriend(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
     public void removeFriend(@PathVariable("id") Integer id, @PathVariable("friendId") Integer friendId) {
+        log.info("Received request to remove friend with ID: {} from user with ID: {}", friendId, id);
         userService.removeFriend(id, friendId);
     }
 
     @GetMapping("/{id}/friends")
     public List<User> getAllUserFriends(@PathVariable("id") Integer id) {
+        log.info("Received request to get all friends for user with ID: {}", id);
         return userService.getUserAllFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
     public Collection<User> getCommonFriends(@PathVariable("id") Integer id, @PathVariable("otherId") Integer otherId) {
+        log.info("Received request to get common friends for user with ID: {} and user with ID: {}", id, otherId);
         return userService.getCommonFriends(id, otherId);
     }
 
