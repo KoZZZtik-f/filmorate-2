@@ -41,8 +41,13 @@ public class FriendshipDbStorage implements FriendshipStorage{
 
 
     @Override
-    public Set<User> getFriends(int userId) {
-        throw new RuntimeException("Метод еще в разработке");
+    public List<User> getFriends(int userId) {
+        final String sql = "SELECT u.id, u.name, u.login, u.email, u.birthday " +
+                "FROM users u " +
+                "JOIN friendships f ON (u.id = f.friend_id AND f.user_id = ?) " +
+                "OR (u.id = f.user_id AND f.friend_id = ?)";
+
+        return jdbcTemplate.query(sql, Mappers.getUserRowMapper(), userId, userId);
     }
 
     @Override
