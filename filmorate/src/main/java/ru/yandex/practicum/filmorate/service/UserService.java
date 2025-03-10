@@ -67,12 +67,12 @@ public class UserService {
         userStorage.updateUser(friend);
     }
 
-    public Set<User> getUserAllFriends(Integer id) {
+    public List<User> getUserAllFriends(Integer id) {
 
         return friendshipStorage.getFriends(id);
     }
 
-    public Set<User> getCommonFriends(Integer id, Integer otherId) {
+    public Collection<User> getCommonFriends(Integer id, Integer otherId) {
         Set<User> res = friendshipStorage.getCommonFriends(id, otherId);
 
         return res;
