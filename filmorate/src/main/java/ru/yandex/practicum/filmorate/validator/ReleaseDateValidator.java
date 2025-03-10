@@ -2,15 +2,19 @@ package ru.yandex.practicum.filmorate.validator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-
 import java.time.LocalDate;
 
-public class ReleaseDateValidator implements ConstraintValidator<ReleaseDate, LocalDate> {
+public class ReleaseDateValidator implements ConstraintValidator<ReleaseDateValidation, LocalDate> {
+
+    private static final LocalDate FIRST_ALLOWED_DATE = LocalDate.of(1895, 12, 28);
 
     @Override
-    public boolean isValid(LocalDate date, ConstraintValidatorContext constraintValidatorContext) {
-        LocalDate firstAllowedDate = LocalDate.parse("28-12-1895");
+    public void initialize(ReleaseDateValidation constraintAnnotation) {
+        // Если вдруг инициализация нужна, но в этом случае не требуется
+    }
 
-        return date.isAfter(firstAllowedDate) || date.isEqual(firstAllowedDate);
+    @Override
+    public boolean isValid(LocalDate date, ConstraintValidatorContext context) {
+        return (date == null) || (!date.isBefore(FIRST_ALLOWED_DATE));
     }
 }
