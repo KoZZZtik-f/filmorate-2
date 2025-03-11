@@ -15,7 +15,9 @@ import ru.yandex.practicum.filmorate.storage.mapper.Mappers;
 
 import java.time.Duration;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @Primary
@@ -26,8 +28,20 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film createFilm(Film film) {
-        final String sql = "INSERT INTO films (id, name, description, release_date, duration) VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, film.getId(), film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration().getSeconds());
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("films")
+                .usingGeneratedKeyColumns("id");
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("name", film.getName());
+        parameters.put("description", film.getDescription());
+        parameters.put("release_date", film.getReleaseDate());
+        parameters.put("duration", film.getDuration().toSeconds()); // Преобразование Duration в секунды
+        parameters.put("genre_id", film.getGenreId());
+
+        int filmId = simpleJdbcInsert.executeAndReturnKey(parameters).intValue();
+        film.setId(filmId);
+
         return film;
     }
 
