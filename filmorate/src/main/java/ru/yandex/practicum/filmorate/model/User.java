@@ -31,6 +31,7 @@ public class User {
     @PastOrPresent(message = "Birthday must be in the past or present")
     private LocalDate birthday;
 
+    @JsonIgnore
     private Set<Integer> friends;
 
     public User() {

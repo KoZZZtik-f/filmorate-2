@@ -36,6 +36,7 @@ public class Film {
     @JsonSerialize(using = DurationSerializer.class)
     private Duration duration;
 
+    @JsonIgnore
     private Set<Integer> likes;
 
     public Film() {
