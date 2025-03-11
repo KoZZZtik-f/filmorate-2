@@ -39,6 +39,8 @@ public class Film {
     @JsonIgnore
     private Set<Integer> likes;
 
+    private Integer genreId;
+
     public Film() {
         likes = new HashSet<>();
     }
