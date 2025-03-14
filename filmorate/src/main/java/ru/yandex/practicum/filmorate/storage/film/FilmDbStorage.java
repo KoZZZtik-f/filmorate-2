@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.FilmNotFoundException;
+import ru.yandex.practicum.filmorate.model.Director;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.storage.mapper.Mappers;
@@ -34,8 +35,11 @@ public class FilmDbStorage implements FilmStorage {
         parameters.put("name", film.getName());
         parameters.put("description", film.getDescription());
         parameters.put("release_date", film.getReleaseDate());
-        parameters.put("duration", film.getDuration().toSeconds()); // Преобразование Duration в секунды
-        parameters.put("genre_id", film.getGenreId());
+        parameters.put("duration", film.getDuration().toSeconds());
+        // Добавляем режиссёра, если он задан:
+        if (film.getDirector() != null) {
+            parameters.put("director_id", film.getDirector().getId());
+        }
 
         //Загружаем фильм в базу
         int filmId = simpleJdbcInsert.executeAndReturnKey(parameters).intValue();
