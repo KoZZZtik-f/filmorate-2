@@ -39,6 +39,9 @@ public class Film {
     private Duration duration;
 
     @JsonIgnore
+    private Set<Genre> genres;
+
+    @JsonIgnore
     private Set<Integer> likes;
 
     private Integer genreId;
