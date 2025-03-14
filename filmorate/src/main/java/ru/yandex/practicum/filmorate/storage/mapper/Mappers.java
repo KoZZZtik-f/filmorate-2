@@ -30,8 +30,8 @@ public class Mappers {
         film.setName(resultSet.getString("name"));
         film.setDescription(resultSet.getString("description"));
         film.setReleaseDate(resultSet.getDate("release_date").toLocalDate());
-        film.setDuration(Duration.ofSeconds(resultSet.getInt("duration")));
-        film.setGenreId(resultSet.getInt("genre_id"));
+        film.setDuration(Duration.ofSeconds(resultSet.getLong("duration")));
+
         return film;
     };
 
