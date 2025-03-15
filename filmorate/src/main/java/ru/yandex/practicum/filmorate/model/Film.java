@@ -46,6 +46,8 @@ public class Film {
 
     private Director director;
 
+    private Mpa mpa;
+
     public Film() {
         likes = new HashSet<>();
     }
