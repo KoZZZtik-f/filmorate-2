@@ -7,13 +7,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.FilmNotFoundException;
-import ru.yandex.practicum.filmorate.model.Director;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.storage.mapper.Mappers;
 
-import java.time.Duration;
 import java.util.*;
 
 @Component
@@ -40,14 +37,12 @@ public class FilmDbStorage implements FilmStorage {
             parameters.put("director_id", film.getDirector().getId());
         }
 
-        //Загружаем фильм в базу
         int filmId = simpleJdbcInsert.executeAndReturnKey(parameters).intValue();
         film.setId(filmId);
 
         saveGenres(film);
         return film;
     }
-
 
     @Override
     public Film updateFilm(Film film) {
@@ -64,8 +59,6 @@ public class FilmDbStorage implements FilmStorage {
         return film;
     }
 
-
-
     @Override
     public Film getFilmById(int id) {
         final String sql = "SELECT f.id, f.name, f.description, f.release_date, f.duration, " +
@@ -75,6 +68,7 @@ public class FilmDbStorage implements FilmStorage {
                 "LEFT JOIN directors d ON f.director_id = d.id " +
                 "LEFT JOIN mpas m ON f.mpa_id = m.id " +
                 "WHERE f.id = ?";
+
         try {
             Film film = jdbcTemplate.queryForObject(sql, Mappers.getFilmRowMapper(), id);
             film.setGenres(getGenresForFilm(id));
@@ -106,8 +100,6 @@ public class FilmDbStorage implements FilmStorage {
         return new HashSet<>(jdbcTemplate.query(sql, Mappers.getGenreRowMapper(), filmId));
     }
 
-
-
     @Override
     public void removeFilmById(int id) {
         final String sql = "DELETE FROM films WHERE id = ?";
@@ -124,17 +116,17 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public Collection<Film> getMostPopularFilms(Integer count) {
         final String sql = """
-        SELECT f.id, f.name, f.description, f.release_date, f.duration, 
-               f.mpa_id, m.name AS mpa_name, d.id AS director_id, d.name AS director_name,
-               COUNT(fl.user_id) AS likes_count
-        FROM films f
-        LEFT JOIN likes fl ON f.id = fl.film_id
-        LEFT JOIN mpas m ON f.mpa_id = m.id
-        LEFT JOIN directors d ON f.director_id = d.id
-        GROUP BY f.id, f.name, f.description, f.release_date, f.duration, f.mpa_id, m.name, d.id, d.name
-        ORDER BY likes_count DESC
-        LIMIT ?
-    """;
+                    SELECT f.id, f.name, f.description, f.release_date, f.duration, 
+                           f.mpa_id, m.name AS mpa_name, d.id AS director_id, d.name AS director_name,
+                           COUNT(fl.user_id) AS likes_count
+                    FROM films f
+                    LEFT JOIN likes fl ON f.id = fl.film_id
+                    LEFT JOIN mpas m ON f.mpa_id = m.id
+                    LEFT JOIN directors d ON f.director_id = d.id
+                    GROUP BY f.id, f.name, f.description, f.release_date, f.duration, f.mpa_id, m.name, d.id, d.name
+                    ORDER BY likes_count DESC
+                    LIMIT ?
+                """;
         return jdbcTemplate.query(sql, Mappers.getFilmRowMapper(), count);
     }
 
@@ -148,4 +140,5 @@ public class FilmDbStorage implements FilmStorage {
         final String sql = "SELECT EXISTS(SELECT 1 FROM films WHERE id = ?);";
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, Boolean.class, id));
     }
+
 }
