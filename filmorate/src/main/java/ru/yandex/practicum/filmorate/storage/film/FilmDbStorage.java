@@ -115,6 +115,21 @@ public class FilmDbStorage implements FilmStorage {
         }
     }
 
+    private void saveGenres(Film film) {
+        if (film.getGenres() != null && !film.getGenres().isEmpty()) {
+            String sql = "INSERT INTO films_genres (film_id, genre_id) VALUES (?, ?)";
+            for (Genre genre : film.getGenres()) {
+                jdbcTemplate.update(sql, film.getId(), genre.getId());
+            }
+        }
+    }
+
+    private void updateGenres(Film film) {
+        String deleteSql = "DELETE FROM films_genres WHERE film_id = ?";
+        jdbcTemplate.update(deleteSql, film.getId());
+        saveGenres(film);
+    }
+
     private Set<Genre> getGenresForFilm(int filmId) {
         String sql = "SELECT g.id, g.name FROM genres g " +
                 "JOIN films_genres fg ON g.id = fg.genre_id " +
