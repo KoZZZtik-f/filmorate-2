@@ -44,13 +44,7 @@ public class FilmDbStorage implements FilmStorage {
         int filmId = simpleJdbcInsert.executeAndReturnKey(parameters).intValue();
         film.setId(filmId);
 
-        // Сохраняем жанры (если они заданы)
-        if (film.getGenres() != null && !film.getGenres().isEmpty()) {
-            String sql = "INSERT INTO films_genres (film_id, genre_id) VALUES (?, ?)";
-            for (Genre genre : film.getGenres()) {
-                jdbcTemplate.update(sql, filmId, genre.getId());
-            }
-        }
+        saveGenres(film);
         return film;
     }
 
