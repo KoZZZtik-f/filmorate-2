@@ -13,6 +13,7 @@ import ru.yandex.practicum.filmorate.exception.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.model.Director;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.storage.mapper.Mappers;
 
 import java.time.Duration;
@@ -36,7 +37,8 @@ public class FilmDbStorage implements FilmStorage {
         parameters.put("description", film.getDescription());
         parameters.put("release_date", film.getReleaseDate());
         parameters.put("duration", film.getDuration().toSeconds());
-        // Добавляем режиссёра, если он задан:
+        parameters.put("mpa_id", film.getMpa() != null ? film.getMpa().getId() : null);
+
         if (film.getDirector() != null) {
             parameters.put("director_id", film.getDirector().getId());
         }
@@ -84,6 +86,7 @@ public class FilmDbStorage implements FilmStorage {
                 "d.id AS director_id, d.name AS director_name " +
                 "FROM films f " +
                 "LEFT JOIN directors d ON f.director_id = d.id " +
+                "LEFT JOIN mpas m ON f.mpa_id = m.id " +
                 "WHERE f.id = ?";
         try {
             Film film = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
@@ -129,16 +132,25 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Collection<Film> getAllFilms() {
-        final String sql = "SELECT f.*, g.name AS genre_name " +
-                "FROM films f " +
-                "LEFT JOIN genres g ON f.genre_id = g.id";
+        final String sql = "SELECT f.*, m.id AS mpa_id, m.name AS mpa_name FROM films f " +
+                "LEFT JOIN mpas m ON f.mpa_id = m.id";
         return jdbcTemplate.query(sql, Mappers.getFilmRowMapper());
     }
 
     @Override
     public Collection<Film> getMostPopularFilms(Integer count) {
-        //TODO: написать sql
-        final String sql = "";
+        final String sql = """
+        SELECT f.id, f.name, f.description, f.release_date, f.duration, 
+               f.mpa_id, m.name AS mpa_name, d.id AS director_id, d.name AS director_name,
+               COUNT(fl.user_id) AS likes_count
+        FROM films f
+        LEFT JOIN likes fl ON f.id = fl.film_id
+        LEFT JOIN mpas m ON f.mpa_id = m.id
+        LEFT JOIN directors d ON f.director_id = d.id
+        GROUP BY f.id, f.name, f.description, f.release_date, f.duration, f.mpa_id, m.name, d.id, d.name
+        ORDER BY likes_count DESC
+        LIMIT ?
+    """;
         return jdbcTemplate.query(sql, Mappers.getFilmRowMapper(), count);
     }
 
