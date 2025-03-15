@@ -4,9 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.FilmNotFoundException;
@@ -84,25 +81,7 @@ public class FilmDbStorage implements FilmStorage {
                 "LEFT JOIN mpas m ON f.mpa_id = m.id " +
                 "WHERE f.id = ?";
         try {
-            Film film = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
-                Film f = new Film();
-                f.setId(rs.getInt("id"));
-                f.setName(rs.getString("name"));
-                f.setDescription(rs.getString("description"));
-                f.setReleaseDate(rs.getDate("release_date").toLocalDate());
-                f.setDuration(Duration.ofSeconds(rs.getInt("duration")));
-                // Заполняем режиссёра, если данные есть:
-                int directorId = rs.getInt("director_id");
-                if (directorId != 0) {
-                    Director director = new Director();
-                    director.setId(directorId);
-                    director.setName(rs.getString("director_name"));
-                    f.setDirector(director);
-                }
-                return f;
-            }, id);
-
-            // Подгружаем жанры фильма
+            Film film = jdbcTemplate.queryForObject(sql, Mappers.getFilmRowMapper(), id);
             film.setGenres(getGenresForFilm(id));
             return film;
         } catch (EmptyResultDataAccessException e) {
