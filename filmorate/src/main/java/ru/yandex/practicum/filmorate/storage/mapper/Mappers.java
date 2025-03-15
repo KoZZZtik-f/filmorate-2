@@ -2,9 +2,7 @@ package ru.yandex.practicum.filmorate.storage.mapper;
 
 import lombok.Getter;
 import org.springframework.jdbc.core.RowMapper;
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.model.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,6 +29,24 @@ public class Mappers {
         film.setDescription(resultSet.getString("description"));
         film.setReleaseDate(resultSet.getDate("release_date").toLocalDate());
         film.setDuration(Duration.ofSeconds(resultSet.getLong("duration")));
+
+        // Маппинг режиссёра
+        int directorId = resultSet.getInt("director_id");
+        if (!resultSet.wasNull()) {
+            Director director = new Director();
+            director.setId(directorId);
+            director.setName(resultSet.getString("director_name"));
+            film.setDirector(director);
+        }
+
+        // Маппинг MPA
+        int mpaId = resultSet.getInt("mpa_id");
+        if (!resultSet.wasNull()) {
+            Mpa mpa = new Mpa();
+            mpa.setId(mpaId);
+            mpa.setName(resultSet.getString("mpa_name"));
+            film.setMpa(mpa);
+        }
 
         return film;
     };
