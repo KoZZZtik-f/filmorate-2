@@ -60,21 +60,16 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film updateFilm(Film film) {
-        final String sql = "UPDATE films SET name = ?, description = ?, release_date = ?, duration = ?, director_id = ? WHERE id = ?";
+        final String sql = "UPDATE films SET name = ?, description = ?, release_date = ?, duration = ?, " +
+                "director_id = ?, mpa_id = ? WHERE id = ?";
+
         jdbcTemplate.update(sql, film.getName(), film.getDescription(), film.getReleaseDate(),
                 film.getDuration().toSeconds(),
-                (film.getDirector() != null ? film.getDirector().getId() : null),
+                film.getDirector() != null ? film.getDirector().getId() : null,
+                film.getMpa() != null ? film.getMpa().getId() : null,
                 film.getId());
 
-        // Обновляем жанры: удаляем старые записи и вставляем новые
-        String deleteSql = "DELETE FROM films_genres WHERE film_id = ?";
-        jdbcTemplate.update(deleteSql, film.getId());
-        if (film.getGenres() != null && !film.getGenres().isEmpty()) {
-            String insertSql = "INSERT INTO films_genres (film_id, genre_id) VALUES (?, ?)";
-            for (Genre genre : film.getGenres()) {
-                jdbcTemplate.update(insertSql, film.getId(), genre.getId());
-            }
-        }
+        updateGenres(film);
         return film;
     }
 
