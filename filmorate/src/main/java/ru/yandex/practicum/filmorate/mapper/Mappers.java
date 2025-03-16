@@ -59,4 +59,14 @@ public class Mappers {
         return genre;
     };
 
+    @Getter
+    private static final RowMapper<Director> directorRowMapper = new RowMapper<Director>() {
+        @Override
+        public Director mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Director director = new Director();
+            director.setId(rs.getInt("id"));
+            director.setName(rs.getString("name"));
+            return director;
+        }
+    };
 }

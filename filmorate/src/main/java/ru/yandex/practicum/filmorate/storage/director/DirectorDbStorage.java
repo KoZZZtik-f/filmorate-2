@@ -19,15 +19,6 @@ public class DirectorDbStorage implements DirectorStorage {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final RowMapper<Director> directorRowMapper = new RowMapper<Director>() {
-        @Override
-        public Director mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Director director = new Director();
-            director.setId(rs.getInt("id"));
-            director.setName(rs.getString("name"));
-            return director;
-        }
-    };
 
     @Override
     public Director createDirector(Director director) {
