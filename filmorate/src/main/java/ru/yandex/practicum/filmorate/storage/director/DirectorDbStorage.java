@@ -2,13 +2,11 @@ package ru.yandex.practicum.filmorate.storage.director;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Director;
+import ru.yandex.practicum.filmorate.mapper.Mappers;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,13 +40,13 @@ public class DirectorDbStorage implements DirectorStorage {
     @Override
     public Director getDirectorById(Integer id) {
         String sql = "SELECT * FROM directors WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, directorRowMapper, id);
+        return jdbcTemplate.queryForObject(sql, Mappers.getDirectorRowMapper(), id);
     }
 
     @Override
     public Collection<Director> getAllDirectors() {
         String sql = "SELECT * FROM directors";
-        return jdbcTemplate.query(sql, directorRowMapper);
+        return jdbcTemplate.query(sql, Mappers.getDirectorRowMapper());
     }
 
     @Override
