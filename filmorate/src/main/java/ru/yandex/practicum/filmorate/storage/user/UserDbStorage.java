@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.mapper.Mappers;
+import ru.yandex.practicum.filmorate.mapper.Mappers;
 
 import java.util.Collection;
 

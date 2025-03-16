@@ -10,7 +10,7 @@ import ru.yandex.practicum.filmorate.exception.AlreadyFriendsException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.mapper.Mappers;
+import ru.yandex.practicum.filmorate.mapper.Mappers;
 
 import java.util.List;
 import java.util.Set;

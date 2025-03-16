@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.mapper;
+package ru.yandex.practicum.filmorate.mapper;
 
 import lombok.Getter;
 import org.springframework.jdbc.core.RowMapper;
