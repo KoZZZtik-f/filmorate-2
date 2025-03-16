@@ -9,6 +9,7 @@ import ru.yandex.practicum.filmorate.storage.like.LikeStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @Validated
@@ -44,7 +45,7 @@ public class FilmService {
         likeStorage.removeLike(filmId, userId);
     }
 
-    public Collection<Film> getMostPopularFilms(Integer count) {
+    public List<Film> getMostPopularFilms(Integer count) {
         return filmStorage.getMostPopularFilms(count);
     }
 
