@@ -2,13 +2,10 @@ package ru.yandex.practicum.filmorate.storage.genre;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.mapper.Mappers;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Collection;
 
 @Component
