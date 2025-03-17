@@ -21,7 +21,7 @@ import java.util.Set;
 public class Film {
 
     @NotNull(message = "ID cannot be null")
-    private int id;
+    private Integer id;
 
     @NotNull(message = "Name cannot be null")
     @NotBlank(message = "Name cannot be blank")
