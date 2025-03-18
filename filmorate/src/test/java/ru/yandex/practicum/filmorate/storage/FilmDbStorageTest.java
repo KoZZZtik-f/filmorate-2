@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Import(FilmDbStorage.class)
 @SpringBootTest
 @ActiveProfiles("test")
-@Sql(scripts = {"/schema.sql", "/data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = {"/schema.sql", "/clear.sql", "/data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class FilmDbStorageTest {
 
     @Autowired
